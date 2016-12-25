@@ -19,7 +19,7 @@ This package provides Python virtualenv support for Atom users.
 
 ## To-Do List
 
-- [ ] Add support to show the current virutalenv in the status bar
+- [ ] Add support to show the current virtualenv in the status bar
 - [ ] Add support to use PIP to install new packages
 
 This project is on initial development. Feel free to contribute reporting bugs, improvements or creating pull requests.
