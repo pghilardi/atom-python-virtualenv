@@ -1,0 +1,15 @@
+{
+  "name": "atom-python-virtualenv",
+  "main": "./lib/init",
+  "version": "0.1.0",
+  "description": "Virtual Env for python environments",
+  "repository": "https://github.com/pghilardi/atom-python-virtualenv",
+  "license": "MIT",
+  "engines": {
+    "atom": ">=1.0.0 <2.0.0"
+  },
+  "dependencies": {
+    "atom-space-pen-views": "latest",
+    "status-bar": ">=0.41.0"
+  }
+}

@@ -1,0 +1,14 @@
+
+'menu': [
+  {
+    'label': 'Packages'
+    'submenu': [
+      'label': 'Virtualenv'
+      'submenu': [
+        {'label': 'Make', 'command': 'virtualenv:make'}
+        {'label': 'Deactivate', 'command': 'virtualenv:deactivate'}
+        {'label': 'Select', 'command': 'virtualenv:select'}
+      ]
+    ]
+  }
+]

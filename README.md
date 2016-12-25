@@ -1,29 +1,18 @@
-# atom-python-virtualenv
+## Intro
 
-## Description
+The goal of this package is to provide management tools related to Python
+virtual environments. This package currently supports two types of setups.
 
-This package provides Python virtualenv support for Atom users.
+1. A [virtualenvwrapper](https://pypi.python.org/pypi/virtualenvwrapper) installation
+2. Environments in the root folder of you project
 
-## Requirements
+## Future
 
- This package currently supports two types of setups:
+The following are all things I'd like to add to atom, but they may not all end
+up as part of this tool.
 
-* A virtualenvwrapper installation
-* Environments in the root folder of you project 
-
-## Usage
-
-* Activate a different environment (Virtualenv select)
-* Create a new environment (Virtualenv make)
-* Deactivate an environment (Virtualenv deactivate)
-
-## To-Do List
-
-- [ ] Add support to show the current virtualenv in the status bar
-- [ ] Add support to use PIP to install new packages
-
-This project is on initial development. Feel free to contribute reporting bugs, improvements or creating pull requests.
-
-## Disclaimer
-
-Part of this code comes from [jhutchins project](https://github.com/jhutchins/virtualenv). I have created a new repository because jhutchins project is no longer maintained.
+* Updating on system file changes
+* Default environments for projects
+* More options on environment creation
+* pip package manager
+* Auto dep tool for setup.py
