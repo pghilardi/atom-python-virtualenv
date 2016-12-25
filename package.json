@@ -3,6 +3,13 @@
   "main": "./lib/init",
   "version": "0.3.0",
   "description": "Virtual Env for python environments",
+  "keywords": [
+    "python",
+    "virtualenv",
+    "venv",
+    "environment",
+    "virtualenvwrapper"
+  ],
   "repository": "https://github.com/pghilardi/atom-python-virtualenv",
   "license": "MIT",
   "engines": {
