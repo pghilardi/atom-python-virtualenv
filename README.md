@@ -1,10 +1,10 @@
 ## Description
 
-This package provides Python virtualenv support for Atom users.
+This package provides Python Virtualenv support for Atom users.
 
 ## Requirements
 
-This package currently supports two types of setups:
+This package currently supports two types of setup:
 
 * A [virtualenvwrapper](https://pypi.python.org/pypi/virtualenvwrapper) installation
 * Environments in the root folder of you project
@@ -26,4 +26,4 @@ This project is on initial development. Feel free to contribute reporting bugs, 
 
 ## Disclaimer
 
-Part of this code comes from [jhutchins project](https://github.com/jhutchins/virtualenv). I have created a new repository because jhutchins project is no longer maintained.
+Part of this code comes from [Jhutchins Project](https://github.com/jhutchins/virtualenv). I have created a new repository because jhutchins project is no longer maintained.
