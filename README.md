@@ -21,6 +21,7 @@ This package currently supports two types of setup:
 
 ## To-Do List
 
+ - [ ] Add support to Windows
  - [ ] Add support to show the current virtualenv in the status bar
  - [ ] Add support to use PIP to install new packages
 
