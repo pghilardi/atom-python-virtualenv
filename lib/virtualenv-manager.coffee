@@ -11,25 +11,32 @@ compare = (a,b) ->
   return 0
 
 module.exports =
+
   class VirtualenvManager extends EventEmitter
 
     constructor: () ->
+      manager = @
+      atom.config.observe 'atom-python-virtualenv.workOnHome', (newValue) ->
+        manager.initEnvs()
+
+      @initEnvs()
+
+    initEnvs: (manager) ->
       @path = process.env.VIRTUAL_ENV
-      confHome = atom.config.get "virtualenv.workonHome"
-      if confHome != "autodetect" and fs.existsSync(confHome)
-        @home = confHome
-        @setup()
-      else if process.env.WORKON_HOME
-        @home = process.env.WORKON_HOME
+
+      workOnHome = atom.config.get("atom-python-virtualenv.workOnHome")
+      if process.env.HOME and workOnHome
+        @home = process.env.HOME
         @setup()
       else
+        path = require 'path'
         wrapper = path.join(process.env.HOME, '.virtualenvs')
         fs.exists wrapper, (exists) =>
           @home = if exists then wrapper else process.env.PWD
           @setup()
 
     setup: () ->
-      @wrapper = Boolean(process.env.WORKON_HOME)
+      @wrapper = Boolean(process.env.HOME)
 
       if @path?
         @env = @path.replace(@home + '/', '')
