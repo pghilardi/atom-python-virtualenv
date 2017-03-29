@@ -15,45 +15,43 @@ module.exports =
   class VirtualenvManager extends EventEmitter
 
     constructor: () ->
-      manager = @
-      atom.config.observe 'atom-python-virtualenv.workOnHome', (newValue) ->
-        manager.initEnvs()
-
       @initEnvs()
 
-    initEnvs: (manager) ->
-      @path = process.env.VIRTUAL_ENV
-
-      workOnHome = atom.config.get("atom-python-virtualenv.workOnHome")
-      if process.env.HOME and workOnHome
-        @home = process.env.HOME
-        @setup()
-      else
-        path = require 'path'
-        wrapper = path.join(process.env.HOME, '.virtualenvs')
-        fs.exists wrapper, (exists) =>
-          @home = if exists then wrapper else process.env.PWD
-          @setup()
-
-    setup: () ->
-      @wrapper = Boolean(process.env.HOME)
-
-      if @path?
-        @env = @path.replace(@home + '/', '')
-      else
-        @env = '<None>'
-
+    listenVirtualEnvsChange: () ->
       try
         fs.watch @home, (event, filename) =>
           if event != "change"
             setTimeout =>
-              @get_options()
+              @getVirtualEnvs()
             , 2000
       catch error
         console.info("Failed to setup file system watch, home = {#{@home}}")
-        console.error(error)
 
-      @get_options()
+    getVirtualEnvs: () ->
+      filePaths = atom.project.getPaths()
+      filePaths.push(@home)
+
+      @options = []
+      for filePath in filePaths
+        cmd = 'find . -maxdepth 3 -name activate'
+        exec cmd, {'cwd' : filePath}, (error, stdout, stderr) =>
+          for opt in (venvPath.trim().split('/')[1] for venvPath in stdout.split('\n'))
+            if opt and opt not in @options
+                @options.push({'name': opt})
+
+            @options.sort(compare)
+            if @wrapper or @options.length > 1
+              @emit('options', @options)
+
+    initEnvs: () ->
+      @path = process.env.VIRTUAL_ENV
+      wrapper = path.join(process.env.HOME, '.virtualenvs')
+      fs.exists wrapper, (exists) =>
+        @home = if exists then wrapper else process.env.PWD
+        @getVirtualEnvs()
+
+        if exists
+          @listenVirtualEnvsChange()
 
     change: (env) ->
       if @path?
@@ -70,25 +68,9 @@ module.exports =
 
     deactivate: () ->
       process.env.PATH = process.env.PATH.replace(@path + '/bin:', '')
-
-      console.log process.env.PATH
-
       @path = null
       @env = '<None>'
       @emit('virtualenv:changed')
-
-    get_options: () ->
-      cmd = 'find . -maxdepth 3 -name activate'
-      @options = []
-      exec cmd, {'cwd' : @home}, (error, stdout, stderr) =>
-        for opt in (path.trim().split('/')[1] for path in stdout.split('\n'))
-          if opt
-            @options.push({'name': opt})
-        @options.sort(compare)
-        if @wrapper or @options.length > 1
-          @emit('options', @options)
-        if @options.length == 1 and not @wrapper
-          @change(@options[0])
 
     ignore: (path) ->
       if @wrapper

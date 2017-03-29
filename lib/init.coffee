@@ -21,6 +21,9 @@ module.exports =
       return
 
     manager = @manager
+    atom.project.onDidChangePaths ->
+      manager.initEnvs()
+
     atom.commands.add 'atom-workspace', 'virtualenv:make': ->
       (new MakeDialog(manager)).attach()
 
@@ -31,6 +34,5 @@ module.exports =
       manager.deactivate()
 
     @manager.on 'selector:show', =>
-      console.log 'selector was show'
       view = new VirtualenvListView(@manager)
       view.attach()
