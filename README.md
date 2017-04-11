@@ -9,13 +9,14 @@ This package **only works in UNIX systems**. It does not work in Windows.
 This package currently supports two types of setup:
 
 * A [virtualenvwrapper](https://pypi.python.org/pypi/virtualenvwrapper) installation
-* Environments in the root folder of you project
+* Projects in your $HOME folder with virtualenvs inside it
+* Environments in the root folder of you projects (ex: project1/env or project1/venv), so you can add the project paths manually in the additional virtual envs settings
 
 ## Usage
 
-By default this plug-in is configured to use with a virtualenvwrapper. But if your virtual envs are inside the HOME folder of your username you can just check  a configuration option on Settings: 
+By default this plug-in is configured to use with a virtualenvwrapper and to get virtualenvs from the $HOME folder. But you can add specific virtualenvs paths too.
 
-![settings](https://cloud.githubusercontent.com/assets/1611808/24335317/3387d064-1251-11e7-9233-83c99796b5a9.png)
+![settings](https://cloud.githubusercontent.com/assets/1611808/24892002/f3d69850-1e4f-11e7-835a-0dede75dd49c.png)
 
 Commands:
 
