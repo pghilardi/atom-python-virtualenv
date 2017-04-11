@@ -15,7 +15,8 @@ module.exports =
 
     viewForItem: (env) ->
       element = document.createElement('li')
-      element.classList.add('active') if env.name is @manager.env
+      if @manager.env
+        element.classList.add('active') if env.name is @manager.env.name
       element.textContent = env.name
       element
 
