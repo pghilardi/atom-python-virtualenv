@@ -7,12 +7,24 @@ module.exports =
   manager: new VirtualenvManger()
 
   config:
-    workOnHome:
+
+    getVirtualEnvsFromWrapper:
       type: 'boolean'
-      default: false
-      title: 'Use this configuration if all your virtual envs are in the HOME
-      folder and you are not using virtualenvwrapper. With this configuration
-      your virtual envs will be obtained from /home/<user>/ folder'
+      default: true
+      title: 'Get virtualenvs from virtualenvwrapper?'
+
+    getVirtualEnvsFromHome:
+      type: 'boolean'
+      default: true
+      title: 'Get virtualenvs from the $HOME folder?'
+
+    additionalVirtualEnvPaths:
+      type: 'string'
+      default: ''
+      title: 'Configure additional projects with virtualenvs separated by semicolon.
+      You should add the path of the project, without the virtualenv (/env or /venv).
+      The $HOME variable points to the user home folder.
+      Example: $HOME/projects/p1;$HOME/projects/p2;'
 
   activate: (state) ->
 
@@ -21,6 +33,18 @@ module.exports =
       return
 
     manager = @manager
+    atom.project.onDidChangePaths ->
+      manager.initEnvs()
+
+    atom.config.onDidChange 'atom-python-virtualenv.additionalVirtualEnvPaths', ({newValue, oldValue}) ->
+      manager.initEnvs()
+
+    atom.config.onDidChange 'atom-python-virtualenv.getVirtualEnvsFromHome', ({newValue, oldValue}) ->
+      manager.initEnvs()
+
+    atom.config.onDidChange 'atom-python-virtualenv.getVirtualEnvsFromWrapper', ({newValue, oldValue}) ->
+      manager.initEnvs()
+
     atom.commands.add 'atom-workspace', 'virtualenv:make': ->
       (new MakeDialog(manager)).attach()
 
@@ -31,6 +55,5 @@ module.exports =
       manager.deactivate()
 
     @manager.on 'selector:show', =>
-      console.log 'selector was show'
       view = new VirtualenvListView(@manager)
       view.attach()
