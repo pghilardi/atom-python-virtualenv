@@ -72,6 +72,7 @@ module.exports =
                   opt = splittedFilePaths[splittedFilePaths.length - 1]
 
                 if opt
+                    path = require 'path'
                     venvPath = path.join(filePath, opt)
                     info = {'name': opt, 'path': venvPath}
                     if not @hasVirtualEnv(info)
