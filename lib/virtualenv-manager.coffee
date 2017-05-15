@@ -83,24 +83,26 @@ module.exports =
                   @emit('options', @options)
 
     getPathForEnv: (env) ->
-      path = env.path
-      return path + "/bin:"
+      currentPath = env.path
+      return currentPath + "/bin:"
 
     change: (env) ->
-      if @env
+      if @env?
         # Remove current virtual env from path
-        process.env.PATH = process.env.PATH.replace(@getPathForEnv(env), '')
+        process.env.PATH = process.env.PATH.replace(@getPathForEnv(@env), '')
 
       process.env.PATH = @getPathForEnv(env) + process.env.PATH
-      @env = env
-      @emit('virtualenv:changed')
-      atom.notifications.addSuccess('Virtualenv changed with success!')
+      if env?
+        @env = env
+        @emit('virtualenv:changed')
+        atom.notifications.addSuccess('Virtualenv changed with success!')
 
     deactivate: () ->
-      process.env.PATH = process.env.PATH.replace(@getPathForEnv(@env), '')
+      if @env?
+        process.env.PATH = process.env.PATH.replace(@getPathForEnv(@env), '')
+        @emit('virtualenv:changed')
+        atom.notifications.addSuccess('Virtualenv deactivated with success!')
       @env = null
-      @emit('virtualenv:changed')
-      atom.notifications.addSuccess('Virtualenv deactivated with success!')
 
     make: (name) ->
       cmd = 'virtualenv ' + name
