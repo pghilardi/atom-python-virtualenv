@@ -37,9 +37,11 @@ module.exports =
           @getVirtualEnvs([wrapper], true)
         else
           customWorkOnHome = atom.config.get('atom-python-virtualenv.getWorkOnHome')
-          customWorkOnHome = customWorkOnHome.replace('$HOME', process.env.HOME)
-          if customWorkOnHome and fs.existsSync customWorkOnHome
-            @getVirtualEnvs([customWorkOnHome], true)
+
+          if customWorkOnHome?
+            customWorkOnHome = customWorkOnHome.replace('$HOME', process.env.HOME)
+            if fs.existsSync customWorkOnHome
+              @getVirtualEnvs([customWorkOnHome], true)
 
       # Get all envs from configured paths
       additionalPaths = atom.config.get('atom-python-virtualenv.additionalVirtualEnvPaths')
