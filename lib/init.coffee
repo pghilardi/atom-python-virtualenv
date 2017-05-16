@@ -8,28 +8,44 @@ module.exports =
 
   config:
 
-    getVirtualEnvsFromWrapper:
-      type: 'boolean'
-      default: true
-      title: 'Get virtualenvs from virtualenvwrapper?'
-
-    getWorkOnHome:
-      type: 'string'
-      title: 'Only for use with virtualenvwrapper. Force the WORKON_HOME path
-      when this plug-in cannot access the path variable'
-
     getVirtualEnvsFromHome:
       type: 'boolean'
       default: true
-      title: 'Get virtualenvs from the $HOME folder?'
+      title: 'Get virtualenvs from the home folder?'
+      order: 1
+
+    getVirtualEnvsFromWrapper:
+      type: 'boolean'
+      default: true
+      title: 'Get virtualenvs from the virtualenvwrapper folder?'
+      order: 2
+
+    getWorkOnHome:
+      type: 'string'
+      default: ''
+      title: 'WORKON_HOME (virtualenvwrapper must be enabled)'
+      description: 'By default the WORKON_HOME variable will be obtained
+      automatically. But, if this does not work, you can force the WORKON_HOME
+      here.
+      <br>
+      Example: $HOME/.virtualenvs;
+      <br>
+      <br>
+      The $HOME variable points to the user home folder.'
+      order: 3
 
     additionalVirtualEnvPaths:
       type: 'string'
       default: ''
-      title: 'Configure additional projects with virtualenvs separated by semicolon.
+      title: 'Additional virtualenvs'
+      description: 'Configure additional projects with virtualenvs separated by semicolon.
       You should add the path of the project, without the virtualenv (/env or /venv).
-      The $HOME variable points to the user home folder.
-      Example: $HOME/projects/p1;$HOME/projects/p2;'
+      <br>
+      Example: $HOME/projects/p1;$HOME/projects/p2;
+      <br>
+      <br>
+      The $HOME variable points to the user home folder.'
+      order: 4
 
   activate: (state) ->
 

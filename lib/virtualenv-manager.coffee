@@ -37,7 +37,7 @@ module.exports =
           @getVirtualEnvs([wrapper], true)
         else
           customWorkOnHome = atom.config.get('atom-python-virtualenv.getWorkOnHome')
-          console.log customWorkOnHome
+          customWorkOnHome = customWorkOnHome.replace('$HOME', process.env.HOME)
           if customWorkOnHome and fs.existsSync customWorkOnHome
             @getVirtualEnvs([customWorkOnHome], true)
 
@@ -62,7 +62,6 @@ module.exports =
       for filePath, index in filePaths
         do (filePath) =>
           cmd = 'find . -maxdepth 3 -name activate'
-          console.log filePath
           exec cmd, {'cwd' : filePath}, (error, stdout, stderr) =>
             if stdout
               pathsFound = stdout.split('\n')
