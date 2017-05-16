@@ -33,9 +33,13 @@ module.exports =
       if getVirtualEnvsFromWrapper == undefined || getVirtualEnvsFromWrapper
         # Get all envs from wrapper (using the WORKON_HOME path)
         wrapper = process.env.WORKON_HOME
-        if wrapper
-          fs.exists wrapper, (exists) =>
-            @getVirtualEnvs([wrapper], true)
+        if wrapper and fs.existsSync wrapper
+          @getVirtualEnvs([wrapper], true)
+        else
+          customWorkOnHome = atom.config.get('atom-python-virtualenv.getWorkOnHome')
+          console.log customWorkOnHome
+          if customWorkOnHome and fs.existsSync customWorkOnHome
+            @getVirtualEnvs([customWorkOnHome], true)
 
       # Get all envs from configured paths
       additionalPaths = atom.config.get('atom-python-virtualenv.additionalVirtualEnvPaths')

@@ -13,6 +13,11 @@ module.exports =
       default: true
       title: 'Get virtualenvs from virtualenvwrapper?'
 
+    getWorkOnHome:
+      type: 'string'
+      title: 'Only for use with virtualenvwrapper. Force the WORKON_HOME path
+      when this plug-in cannot access the path variable'
+
     getVirtualEnvsFromHome:
       type: 'boolean'
       default: true
@@ -43,6 +48,9 @@ module.exports =
       manager.initEnvs()
 
     atom.config.onDidChange 'atom-python-virtualenv.getVirtualEnvsFromWrapper', ({newValue, oldValue}) ->
+      manager.initEnvs()
+
+    atom.config.onDidChange 'atom-python-virtualenv.getWorkOnHome', ({newValue, oldValue}) ->
       manager.initEnvs()
 
     atom.commands.add 'atom-workspace', 'virtualenv:make': ->
