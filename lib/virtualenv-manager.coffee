@@ -26,11 +26,11 @@ module.exports =
 
       # Add home folder on search of virtualenvs
       getVirtualEnvsFromHome = atom.config.get('atom-python-virtualenv.getVirtualEnvsFromHome')
-      if getVirtualEnvsFromHome == undefined || getVirtualEnvsFromHome
+      if not getVirtualEnvsFromHome? || getVirtualEnvsFromHome
         @getVirtualEnvs([process.env.HOME], true)
 
       getVirtualEnvsFromWrapper = atom.config.get('atom-python-virtualenv.getVirtualEnvsFromWrapper')
-      if getVirtualEnvsFromWrapper == undefined || getVirtualEnvsFromWrapper
+      if not getVirtualEnvsFromWrapper? || getVirtualEnvsFromWrapper
         # Get all envs from wrapper (using the WORKON_HOME path)
         wrapper = process.env.WORKON_HOME
         if wrapper and fs.existsSync wrapper
