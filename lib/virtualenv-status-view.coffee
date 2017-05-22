@@ -6,11 +6,16 @@ class VirtualenvStatusView
 
   # Initialize the status element to show in the status bar
   constructor: ->#(serializedState)->
+
+      # Construct status element and content
       @status = document.createElement('div')
       @status.classList.add('inline-block')
       link = document.createElement('a')
       link.textContent = VirtualenvStatusView.NO_ENV_STR
       @status.appendChild(link)
+
+      # Add a tooltip to the status
+      @tooltip = atom.tooltips.add(@status, title: => "Current virtualenv: #{@status.childNodes[0].textContent}")
 
   # Set the status element string to the no env constant
   clearStatus: ->
@@ -26,3 +31,4 @@ class VirtualenvStatusView
 
   destroy: ->
     @status.remove()
+    @tooltip.dispose()
