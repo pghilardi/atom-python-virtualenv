@@ -105,9 +105,9 @@ module.exports =
     deactivate: () ->
       if @env?
         process.env.PATH = process.env.PATH.replace(@getPathForEnv(@env), '')
+        @env = null
         @emit('virtualenv:changed')
         atom.notifications.addSuccess('Virtualenv deactivated with success!')
-      @env = null
 
     make: (name) ->
       cmd = 'virtualenv ' + name

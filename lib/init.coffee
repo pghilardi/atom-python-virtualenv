@@ -1,6 +1,7 @@
 VirtualenvView = require './virtualenv-view'
 VirtualenvListView = require './virtualenv-list-view'
 VirtualenvManger = require './virtualenv-manager'
+VirtualenvStatusView = require './virtualenv-status-view'
 MakeDialog = require './virtualenv-dialog'
 
 module.exports =
@@ -81,3 +82,19 @@ module.exports =
     @manager.on 'selector:show', =>
       view = new VirtualenvListView(@manager)
       view.attach()
+
+    # Create the view for the status bar and change the status string according
+    # to the changed environement
+    @virtualenvStatusView = new VirtualenvStatusView()
+    @manager.on 'virtualenv:changed', =>
+      if @manager.env?
+        @virtualenvStatusView.setStatus(@manager.env.name)
+      else
+        @virtualenvStatusView.clearStatus()
+
+  consumeStatusBar: (statusBar) ->
+    @statusBarTile = statusBar.addLeftTile(item: @virtualenvStatusView.getStatus(), priority: 100);
+
+  deactivate: ->
+    @statusBarTile?.destroy()
+    @statusBarTile = null

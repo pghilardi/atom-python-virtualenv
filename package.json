@@ -18,5 +18,12 @@
   "dependencies": {
     "atom-space-pen-views": "latest",
     "status-bar": ">=0.41.0"
+  },
+  "consumedServices": {
+    "status-bar": {
+      "versions": {
+        "^1.0.0": "consumeStatusBar"
+      }
+    }
   }
 }
