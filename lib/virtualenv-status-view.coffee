@@ -17,18 +17,15 @@ class VirtualenvStatusView
       @status.appendChild(link)
 
       # Add a tooltip to the status
-      @tooltip = atom.tooltips.add(@status, title: => "Current virtualenv: #{@status.childNodes[0].textContent}<br>(left click to change, right click to deactivate)")
+      @tooltip = atom.tooltips.add(@status, title: => "Current virtualenv: #{@status.childNodes[0].textContent} (left click to change)") # 0 index cause only one child: the link
 
       # Set click handler
       @status.addEventListener('click', @clickHandler)
       @clickSubscription = new Disposable => @status.removeEventListener('click', @clickHandler)
 
-  # In the case on a virtualenv status click -> either select or deactivate venv
+  # In the case on a virtualenv status click -> select venv
   clickHandler: (event) ->
-    if event.button == 0 # left -> select
       atom.commands.dispatch(atom.views.getView(atom.workspace), 'virtualenv:select')
-    else if event.button == 2 # right -> deactivate
-      atom.commands.dispatch(atom.views.getView(atom.workspace), 'virtualenv:deactivate')
 
   # Set the status element string to the no env constant
   clearStatus: ->
