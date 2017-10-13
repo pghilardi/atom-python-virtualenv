@@ -111,20 +111,29 @@ module.exports =
 
     make: (name) ->
       cmd = 'virtualenv ' + name
-      wrapper = process.env.WORKON_HOME
-      if wrapper and fs.existsSync wrapper
-        root = wrapper
-        message = 'Created virtualenv inside the virtualenvwrapper folder.'
-      else
-        root = process.env.HOME
-        message = 'Created virtualenv inside the $HOME folder.'
 
-      exec cmd, {'cwd' : root}, (error, stdout, stderr) =>
+      customWorkOnHome = atom.config.get('atom-python-virtualenv.getWorkOnHome')
+      if customWorkOnHome
+        customWorkOnHome = customWorkOnHome.replace('$HOME', process.env.HOME)
+        if fs.existsSync customWorkOnHome
+          wrapper = customWorkOnHome
+          message = 'Created virtualenv using custom work on home.'
+      else
+        workOnHome = process.env.WORKON_HOME
+
+        if workOnHome and fs.existsSync workOnHome
+          wrapper  = workOnHome
+          message = 'Created virtualenv inside the default work on home'
+        else
+          wrapper = process.env.HOME
+          message = 'Created virtualenv inside the $HOME folder'
+
+      exec cmd, {'cwd' : wrapper}, (error, stdout, stderr) =>
         if error?
           @emit('error', error, stderr)
         else
           path = require 'path'
-          option = {name: name, path : path.join(root, name)}
+          option = {name: name, path : path.join(wrapper, name)}
           @options.push(option)
           @options.sort(compare)
           @emit('options', @options)
