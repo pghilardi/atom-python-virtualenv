@@ -63,7 +63,7 @@ module.exports =
       @options = []
       for filePath, index in filePaths
         do (filePath) =>
-          cmd = 'find . -maxdepth 3 -name activate'
+          cmd = 'find . -follow -maxdepth 3 -name activate'
           exec cmd, {'cwd' : filePath}, (error, stdout, stderr) =>
             if stdout
               pathsFound = stdout.split('\n')
