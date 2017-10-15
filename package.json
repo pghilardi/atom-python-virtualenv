@@ -1,7 +1,7 @@
 {
   "name": "atom-python-virtualenv",
   "main": "./lib/init",
-  "version": "0.15.0",
+  "version": "0.16.0",
   "description": "Virtual Env for python environments",
   "keywords": [
     "python",
