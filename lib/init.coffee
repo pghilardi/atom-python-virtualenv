@@ -93,6 +93,10 @@ module.exports =
         @virtualenvStatusView.clearStatus()
 
   consumeStatusBar: (statusBar) ->
+    if process.platform == 'win32'
+      atom.notifications.addWarning('The **atom-python-virtual** plug-in does not work in Windows. It only works in UNIX systems')
+      return
+
     @statusBarTile = statusBar.addLeftTile(item: @virtualenvStatusView.getStatus(), priority: 100);
 
   deactivate: ->
