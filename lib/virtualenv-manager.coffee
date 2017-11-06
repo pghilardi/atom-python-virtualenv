@@ -27,21 +27,21 @@ module.exports =
       # Add home folder on search of virtualenvs
       getVirtualEnvsFromHome = atom.config.get('atom-python-virtualenv.getVirtualEnvsFromHome')
       if not getVirtualEnvsFromHome? || getVirtualEnvsFromHome
-        @getVirtualEnvs([process.env.HOME], true)
+        @getVirtualEnvs([process.env.HOME])
 
       getVirtualEnvsFromWrapper = atom.config.get('atom-python-virtualenv.getVirtualEnvsFromWrapper')
       if not getVirtualEnvsFromWrapper? || getVirtualEnvsFromWrapper
         # Get all envs from wrapper (using the WORKON_HOME path)
         wrapper = process.env.WORKON_HOME
         if wrapper and fs.existsSync wrapper
-          @getVirtualEnvs([wrapper], true)
+          @getVirtualEnvs([wrapper])
         else
           customWorkOnHome = atom.config.get('atom-python-virtualenv.getWorkOnHome')
 
           if customWorkOnHome?
             customWorkOnHome = customWorkOnHome.replace('$HOME', process.env.HOME)
             if fs.existsSync customWorkOnHome
-              @getVirtualEnvs([customWorkOnHome], true)
+              @getVirtualEnvs([customWorkOnHome])
 
       # Get all envs from configured paths
       additionalPaths = atom.config.get('atom-python-virtualenv.additionalVirtualEnvPaths')
@@ -51,7 +51,7 @@ module.exports =
         for additionalPath in additionalPaths
           filePaths.push(additionalPath.replace('$HOME', process.env.HOME))
 
-        @getVirtualEnvs(filePaths, false)
+        @getVirtualEnvs(filePaths)
 
     hasVirtualEnv: (env) ->
       for venv in @options
@@ -59,27 +59,30 @@ module.exports =
           return true
       return false
 
-    getVirtualEnvs: (filePaths, isUsingBaseFolder) ->
+    getVirtualEnvs: (filePaths) ->
       @options = []
       for filePath, index in filePaths
         do (filePath) =>
-          cmd = 'find . -follow -maxdepth 3 -name activate'
+
+          if process.platform == 'win32'
+            cmd = ' dir /s /b activate'
+          else
+            cmd = 'find "$(pwd - P)" -follow -maxdepth 3 -name "activate"'
+
           exec cmd, {'cwd' : filePath}, (error, stdout, stderr) =>
             if stdout
               pathsFound = stdout.split('\n')
               for venvPath in pathsFound
-
-                splittedPaths = venvPath.trim().split('/')
-                if isUsingBaseFolder
-                  opt = splittedPaths[1]
-                else
-                  splittedFilePaths = filePath.trim().split('/')
-                  opt = splittedFilePaths[splittedFilePaths.length - 1]
-
-                if opt
-                    path = require 'path'
-                    venvPath = path.join(filePath, opt)
-                    info = {'name': opt, 'path': venvPath}
+                venvPath = path.normalize(venvPath)
+                filePath = path.normalize(filePath)
+                if venvPath and !!venvPath
+                  splittedPaths = venvPath.trim().split(path.sep)
+                  # Only get venv name from path
+                  venvName = splittedPaths[splittedPaths.length - 3]
+                  if venvName
+                    # Ignore /activate on path
+                    venvPath = splittedPaths[..splittedPaths.length - 2].join(path.sep) + path.delimiter
+                    info = {'name': venvName, 'path': venvPath}
                     if not @hasVirtualEnv(info)
                       @options.push(info)
 
@@ -88,8 +91,7 @@ module.exports =
                   @emit('options', @options)
 
     getPathForEnv: (env) ->
-      currentPath = env.path
-      return currentPath + "/bin:"
+      return env.path
 
     change: (env) ->
       if @env?
