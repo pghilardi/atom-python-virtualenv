@@ -28,8 +28,8 @@ Commands:
 
 ## To-Do List
 
- - [ ] Add support to Windows
  - [ ] Add support to use PIP to install new packages
+ - [ ] Add support to use pip env
 
 This project is on initial development. Feel free to contribute reporting bugs, improvements or creating pull requests.
 
