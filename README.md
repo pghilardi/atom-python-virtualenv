@@ -4,9 +4,9 @@ This package provides Python Virtualenv support for Atom users.
 
 ## Requirements
 
-This package **only works in UNIX systems**. It does not work in Windows.
+This package **works in UNIX and WINDOWS systems** :)
 
-This package currently supports two types of setup:
+This package currently supports:
 
 * A [virtualenvwrapper](https://pypi.python.org/pypi/virtualenvwrapper) installation
 * Projects in your $HOME folder with virtualenvs inside it
@@ -28,8 +28,8 @@ Commands:
 
 ## To-Do List
 
- - [ ] Add support to Windows
  - [ ] Add support to use PIP to install new packages
+ - [ ] Add support to use pip env
 
 This project is on initial development. Feel free to contribute reporting bugs, improvements or creating pull requests.
 
