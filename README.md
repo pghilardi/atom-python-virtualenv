@@ -30,6 +30,7 @@ Commands:
 
  - [ ] Add support to use PIP to install new packages
  - [ ] Add support to use pip env
+ - [ ] Add support to conda env
 
 This project is on initial development. Feel free to contribute reporting bugs, improvements or creating pull requests.
 
