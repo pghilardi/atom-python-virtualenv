@@ -67,7 +67,7 @@ module.exports =
           if process.platform == 'win32'
             cmd = 'dir /s /b activate.bat'
           else
-            cmd = 'find "$(pwd - P)" -follow -maxdepth 3 -name "activate"'
+            cmd = 'find "$(pwd - P)" -follow -maxdepth 4 -name "activate"'
 
           exec cmd, {'cwd' : filePath}, (error, stdout, stderr) =>
             if stdout
